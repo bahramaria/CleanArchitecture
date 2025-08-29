@@ -4,17 +4,10 @@ using Quartz;
 
 namespace Framework.Scheduling;
 
-internal sealed class Job<TJobService> : IJob
+internal sealed class Job<TJobService>(IServiceScopeFactory serviceScopeFactory, ILogger<Job<TJobService>> logger) : IJob
     where TJobService : IJobService
 {
-    private readonly IServiceScopeFactory serviceScopeFactory;
-    private readonly ILogger logger;
-
-    public Job(IServiceScopeFactory serviceScopeFactory, ILogger<Job<TJobService>> logger)
-    {
-        this.serviceScopeFactory = serviceScopeFactory;
-        this.logger = logger;
-    }
+    private readonly ILogger logger = logger;
 
     public async Task Execute(IJobExecutionContext context)
     {

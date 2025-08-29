@@ -1,14 +1,7 @@
 ﻿namespace Framework.Security.Encryption;
 
-internal sealed class SimpleRandom
+internal sealed class SimpleRandom(uint seed)
 {
-    private uint seed;
-
-    public SimpleRandom(uint seed)
-    {
-        this.seed = seed;
-    }
-
     public byte NextByte() => (byte)Next(byte.MinValue, byte.MaxValue + 1);
 
     public uint Next()

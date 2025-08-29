@@ -2,18 +2,11 @@
 
 namespace Framework.Threading.Channels;
 
-public class PriorityChannel<T> : IChannel<T>
+public class PriorityChannel<T>(IComparer<T> comparer) : IChannel<T>
 {
-    private readonly object sync;
-    private readonly MaxHeap<Wrapper> heap;
-    private int orderNumber;
-
-    public PriorityChannel(IComparer<T> comparer)
-    {
-        sync = new object();
-        orderNumber = 0;
-        heap = new MaxHeap<Wrapper>(new Comparer(comparer));
-    }
+    private readonly object sync = new object();
+    private readonly MaxHeap<Wrapper> heap = new MaxHeap<Wrapper>(new Comparer(comparer));
+    private int orderNumber = 0;
 
     public int Count => heap.Count;
 
@@ -71,27 +64,14 @@ public class PriorityChannel<T> : IChannel<T>
     }
 
 
-    private sealed class Wrapper
+    private sealed class Wrapper(T value, int orderNumber)
     {
-        public Wrapper(T value, int orderNumber)
-        {
-            Value = value;
-            OrderNumber = orderNumber;
-        }
-
-        public T Value { get; }
-        public int OrderNumber { get; }
+        public T Value { get; } = value;
+        public int OrderNumber { get; } = orderNumber;
     }
 
-    private sealed class Comparer : IComparer<Wrapper>
+    private sealed class Comparer(IComparer<T> comparer) : IComparer<Wrapper>
     {
-        private readonly IComparer<T> comparer;
-
-        public Comparer(IComparer<T> comparer)
-        {
-            this.comparer = comparer;
-        }
-
         public int Compare(Wrapper? x, Wrapper? y)
         {
             var result = comparer.Compare(x!.Value, y!.Value);

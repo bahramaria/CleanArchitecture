@@ -4,10 +4,8 @@ using System.Reflection;
 
 namespace CleanArchitecture.Ordering.Persistence;
 
-public class OrderingDbContext : Framework.Persistence.DbContextBase, IOrderingQueryDb
+public class OrderingDbContext(DbContextOptions<OrderingDbContext> options) : Framework.Persistence.DbContextBase(options), IOrderingQueryDb
 {
-    public OrderingDbContext(DbContextOptions<OrderingDbContext> options) : base(options) { }
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);

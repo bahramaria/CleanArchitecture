@@ -3,15 +3,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CleanArchitecture.Ordering.Persistence.Repositories;
 
-internal class OrderRepository : Domain.Repositories.IOrderRepository
+internal class OrderRepository(OrderingDbContext db) : Domain.Repositories.IOrderRepository
 {
-    private readonly OrderingDbContext db;
-
-    public OrderRepository(OrderingDbContext db)
-    {
-        this.db = db;
-    }
-
     public void Add(Order order)
     {
         db.Set<Order>().Add(order);

@@ -1,35 +1,23 @@
 ﻿namespace Framework.Threading.PeriodicRequestCapturing;
 
-public abstract class PeriodicRequestCapturingStrategyBase<T> : IDisposable
+public abstract class PeriodicRequestCapturingStrategyBase<T>(
+    int capacity,
+    TimeSpan minIntervalTime,
+    TimeSpan? maxIntervalTime = null,
+    T? defaultValueOnMaxIntervalEvaluation = default) : IDisposable
 {
     protected abstract void Evaluate(T? value);
     protected abstract void Disposing();
 
     private readonly Lock sync = new Lock();
-    private readonly Queue<T?> queue;
-    private bool disposed;
-    private DateTime lastEvaluationTime;
+    private readonly Queue<T?> queue = new Queue<T?>();
+    private bool disposed = false;
+    private DateTime lastEvaluationTime = Time;
 
-    protected PeriodicRequestCapturingStrategyBase(
-        int capacity,
-        TimeSpan minIntervalTime,
-        TimeSpan? maxIntervalTime = null,
-        T? defaultValueOnMaxIntervalEvaluation = default)
-    {
-        Capacity = capacity;
-        MinIntervalTime = minIntervalTime;
-        MaxIntervalTime = maxIntervalTime ?? TimeSpan.MaxValue;
-        DefaultValueOnMaxIntervalEvaluation = defaultValueOnMaxIntervalEvaluation;
-
-        disposed = false;
-        queue = new Queue<T?>();
-        lastEvaluationTime = Time;
-    }
-
-    public TimeSpan MinIntervalTime { get; }
-    public TimeSpan MaxIntervalTime { get; }
-    public int Capacity { get; }
-    public T? DefaultValueOnMaxIntervalEvaluation { get; }
+    public TimeSpan MinIntervalTime { get; } = minIntervalTime;
+    public TimeSpan MaxIntervalTime { get; } = maxIntervalTime ?? TimeSpan.MaxValue;
+    public int Capacity { get; } = capacity;
+    public T? DefaultValueOnMaxIntervalEvaluation { get; } = defaultValueOnMaxIntervalEvaluation;
 
     public void Signal(T? value)
     {

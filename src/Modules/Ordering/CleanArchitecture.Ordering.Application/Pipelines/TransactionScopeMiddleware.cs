@@ -7,24 +7,13 @@ using Framework.Results;
 
 namespace CleanArchitecture.Ordering.Application.Pipelines;
 
-internal sealed class TransactionScopeMiddleware<TRequest, TResponse> :
+internal sealed class TransactionScopeMiddleware<TRequest, TResponse>(
+    OrderingDbContext db,
+    IIntegrationEventOutbox eventOutbox,
+    IIntegrationEventBus eventBus) :
     IMiddleware<TRequest, TResponse>
     where TRequest : CommandBase, ICommand<TRequest, TResponse>
 {
-    private readonly OrderingDbContext db;
-    private readonly IIntegrationEventOutbox eventOutbox;
-    private readonly IIntegrationEventBus eventBus;
-
-    public TransactionScopeMiddleware(
-        OrderingDbContext db,
-        IIntegrationEventOutbox eventOutbox,
-        IIntegrationEventBus eventBus)
-    {
-        this.db = db;
-        this.eventOutbox = eventOutbox;
-        this.eventBus = eventBus;
-    }
-
     public async Task<Result<TResponse>> Handle(RequestContext<TRequest> context, IRequestProcessor<TRequest, TResponse> next)
     {
         var cancellationToken = context.CancellationToken;

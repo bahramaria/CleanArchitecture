@@ -1,8 +1,5 @@
 ﻿namespace CleanArchitecture.Actors;
 
-public class Administrator : Actor
+public class Administrator(string username, string displayName) : Actor(Role.Administrator, username, displayName)
 {
-    public Administrator(string username, string displayName)
-        : base(Role.Administrator, username, displayName)
-    { }
 }

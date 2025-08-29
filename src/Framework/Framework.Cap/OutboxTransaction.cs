@@ -3,15 +3,8 @@ using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Framework.Cap;
 
-internal sealed class OutboxTransaction : IOutboxTransaction
+internal sealed class OutboxTransaction(IDbContextTransaction transaction) : IOutboxTransaction
 {
-    private readonly IDbContextTransaction transaction;
-
-    public OutboxTransaction(IDbContextTransaction transaction)
-    {
-        this.transaction = transaction;
-    }
-
     public void Commit()
     {
         transaction.Commit();

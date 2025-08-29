@@ -1,15 +1,10 @@
 ﻿namespace Infrastructure.RequestAudit.Domain;
 
-public sealed class RequestParameters
+public sealed class RequestParameters(int? orderId)
 {
     public static readonly RequestParameters Empty = new RequestParameters(null);
 
-    public RequestParameters(int? orderId)
-    {
-        OrderId = orderId;
-    }
-
-    public int? OrderId { get; }
+    public int? OrderId { get; } = orderId;
 
     public RequestParameters Update(RequestParameters? response)
     {

@@ -4,13 +4,10 @@ using Infrastructure.RequestAudit;
 
 namespace Infrastructure.CommoditySystem.Pipelines;
 
-internal sealed class RequestPipeline<TRequest, TResponse> : Pipeline<TRequest, TResponse>
+internal sealed class RequestPipeline<TRequest, TResponse>(
+    IRequestHandler<TRequest, TResponse> handler,
+    ExceptionTranslationMiddleware<TRequest, TResponse> exceptionTranslation,
+    RequestAuditMiddleware<TRequest, TResponse> audit) : Pipeline<TRequest, TResponse>(handler, exceptionTranslation, audit)
     where TRequest : RequestBase, IRequest<TRequest, TResponse>
 {
-    public RequestPipeline(
-        IRequestHandler<TRequest, TResponse> handler,
-        ExceptionTranslationMiddleware<TRequest, TResponse> exceptionTranslation,
-        RequestAuditMiddleware<TRequest, TResponse> audit)
-        : base(handler, exceptionTranslation, audit)
-    { }
 }

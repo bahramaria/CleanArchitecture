@@ -6,15 +6,8 @@ using Framework.Results;
 
 namespace CleanArchitecture.Ordering.Queries.Orders.OrdersQuery;
 
-internal sealed class Handler : IRequestHandler<Query, PaginatedItems<Models.Order>>
+internal sealed class Handler(IOrderingQueryDb db) : IRequestHandler<Query, PaginatedItems<Models.Order>>
 {
-    private readonly IOrderingQueryDb db;
-
-    public Handler(IOrderingQueryDb db)
-    {
-        this.db = db;
-    }
-
     public async Task<Result<PaginatedItems<Models.Order>>> Handle(Query request, CancellationToken cancellationToken)
     {
         var orders = SelectOrders(request);

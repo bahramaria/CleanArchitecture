@@ -1,28 +1,18 @@
 ﻿namespace Framework.Threading.PeriodicRequestCapturing;
 
-public abstract class PeriodicRequestCapturingStrategyBase : IDisposable
+public abstract class PeriodicRequestCapturingStrategyBase(
+    TimeSpan minIntervalTime,
+    TimeSpan? maxIntervalTime = null) : IDisposable
 {
     protected abstract void Evaluate();
     protected abstract void Disposing();
 
-    private bool disposed;
-    private volatile bool signaled;
-    private DateTime lastEvaluationTime;
+    private bool disposed = false;
+    private volatile bool signaled = false;
+    private DateTime lastEvaluationTime = Time;
 
-    protected PeriodicRequestCapturingStrategyBase(
-        TimeSpan minIntervalTime,
-        TimeSpan? maxIntervalTime = null)
-    {
-        MinIntervalTime = minIntervalTime;
-        MaxIntervalTime = maxIntervalTime ?? TimeSpan.MaxValue;
-
-        disposed = false;
-        signaled = false;
-        lastEvaluationTime = Time;
-    }
-
-    public TimeSpan MinIntervalTime { get; }
-    public TimeSpan MaxIntervalTime { get; }
+    public TimeSpan MinIntervalTime { get; } = minIntervalTime;
+    public TimeSpan MaxIntervalTime { get; } = maxIntervalTime ?? TimeSpan.MaxValue;
 
     public void Signal()
     {

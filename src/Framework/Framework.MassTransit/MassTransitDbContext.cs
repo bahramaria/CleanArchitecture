@@ -3,11 +3,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Framework.MassTransit;
 
-public sealed class MassTransitDbContext : DbContext
+public sealed class MassTransitDbContext(DbContextOptions<MassTransitDbContext> options) : DbContext(options)
 {
-    public MassTransitDbContext(DbContextOptions<MassTransitDbContext> options) : base(options)
-    { }
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);

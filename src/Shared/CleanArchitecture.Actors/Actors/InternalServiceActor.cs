@@ -1,11 +1,7 @@
 ﻿namespace CleanArchitecture.Actors;
 
-public class InternalServiceActor : Actor
+public class InternalServiceActor(string service, string? displayName = null) : Actor(Role.InternalService, service, displayName ?? service)
 {
-    public InternalServiceActor(string service, string? displayName = null)
-        : base(Role.InternalService, service, displayName ?? service)
-    { }
-
     public override string ToString()
     {
         return $"[Internal Service] . [{DisplayName}]";

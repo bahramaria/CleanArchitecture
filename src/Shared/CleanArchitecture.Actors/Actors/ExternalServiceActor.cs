@@ -1,11 +1,7 @@
 ﻿namespace CleanArchitecture.Actors;
 
-public class ExternalServiceActor : Actor
+public class ExternalServiceActor(string service, string serviceName) : Actor(Role.ExternalService, service, serviceName)
 {
-    public ExternalServiceActor(string service, string serviceName)
-        : base(Role.ExternalService, service, serviceName)
-    { }
-
     public override string ToString()
     {
         return $"[External Service] . [{DisplayName}]";

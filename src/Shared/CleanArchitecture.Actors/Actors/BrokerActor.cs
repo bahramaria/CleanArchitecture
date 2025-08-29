@@ -1,16 +1,9 @@
 ﻿namespace CleanArchitecture.Actors;
 
-public class BrokerActor : Actor
+public class BrokerActor(int brokerId, string username, string displayName, bool? isClerk) : Actor(Role.Broker, username, displayName)
 {
-    public BrokerActor(int brokerId, string username, string displayName, bool? isClerk)
-        : base(Role.Broker, username, displayName)
-    {
-        BrokerId = brokerId;
-        IsClerk = isClerk;
-    }
-
-    public int BrokerId { get; }
-    public bool? IsClerk { get; }
+    public int BrokerId { get; } = brokerId;
+    public bool? IsClerk { get; } = isClerk;
 
     public override string ToString()
     {

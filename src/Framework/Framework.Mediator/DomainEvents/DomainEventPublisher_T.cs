@@ -1,15 +1,8 @@
 ﻿namespace Framework.Mediator.DomainEvents;
 
-internal sealed class DomainEventPublisher<TEvent>
+internal sealed class DomainEventPublisher<TEvent>(IEnumerable<IDomainEventHandler<TEvent>> handlers)
     where TEvent : IDomainEvent
 {
-    private readonly IEnumerable<IDomainEventHandler<TEvent>> handlers;
-
-    public DomainEventPublisher(IEnumerable<IDomainEventHandler<TEvent>> handlers)
-    {
-        this.handlers = handlers;
-    }
-
     public async Task<Result<Empty>> Publish(TEvent @event, CancellationToken cancellationToken)
     {
         foreach (var handler in handlers)

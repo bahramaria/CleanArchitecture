@@ -2,13 +2,7 @@
 
 namespace CleanArchitecture.Secrets.Exceptions;
 
-public class InvalidEnvironmentVariableEncryptionException : ConfigurationException
+public class InvalidEnvironmentVariableEncryptionException(string variable) : ConfigurationException($"Invalid Environment Variable '{variable}' Encryption!")
 {
-    public InvalidEnvironmentVariableEncryptionException(string variable)
-        : base($"Invalid Environment Variable '{variable}' Encryption!")
-    {
-        Variable = variable;
-    }
-
-    public string Variable { get; }
+    public string Variable { get; } = variable;
 }

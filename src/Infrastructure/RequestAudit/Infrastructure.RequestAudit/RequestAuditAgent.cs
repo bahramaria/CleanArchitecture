@@ -6,16 +6,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Infrastructure.RequestAudit;
 
-public sealed class RequestAuditAgent : BackgroundServiceAgentBase
+public sealed class RequestAuditAgent(IServiceScopeFactory serviceScopeFactory) : BackgroundServiceAgentBase
 {
-    private readonly IServiceScopeFactory serviceScopeFactory;
-    private readonly System.Threading.Channels.Channel<AuditTrail> logChannel;
-
-    public RequestAuditAgent(IServiceScopeFactory serviceScopeFactory)
-    {
-        this.serviceScopeFactory = serviceScopeFactory;
-        logChannel = System.Threading.Channels.Channel.CreateUnbounded<AuditTrail>();
-    }
+    private readonly System.Threading.Channels.Channel<AuditTrail> logChannel = System.Threading.Channels.Channel.CreateUnbounded<AuditTrail>();
 
     protected override bool IsEnable => true;
 

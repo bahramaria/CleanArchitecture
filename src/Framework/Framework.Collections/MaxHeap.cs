@@ -1,15 +1,8 @@
 ﻿namespace Framework.Collections;
 
-public class MaxHeap<T>
+public class MaxHeap<T>(IComparer<T> comparer)
 {
-    private readonly IComparer<T> comparer;
-    private readonly List<T> elements;
-
-    public MaxHeap(IComparer<T> comparer)
-    {
-        this.comparer = comparer;
-        elements = new List<T>();
-    }
+    private readonly List<T> elements = new List<T>();
 
     public int Count => elements.Count;
 

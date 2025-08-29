@@ -6,22 +6,13 @@ using System.Diagnostics;
 
 namespace Infrastructure.RequestAudit;
 
-public class RequestAuditMiddleware<TRequest, TResponse> : IMiddleware<TRequest, TResponse>
+public class RequestAuditMiddleware<TRequest, TResponse>(
+    IActorResolver actorResolver,
+    RequestAuditAgent requestAudit,
+    ILogger<RequestAuditMiddleware<TRequest, TResponse>> logger) : IMiddleware<TRequest, TResponse>
     where TRequest : Request
 {
-    private readonly IActorResolver actorResolver;
-    private readonly RequestAuditAgent requestAudit;
-    private readonly ILogger logger;
-
-    public RequestAuditMiddleware(
-        IActorResolver actorResolver,
-        RequestAuditAgent requestAudit,
-        ILogger<RequestAuditMiddleware<TRequest, TResponse>> logger)
-    {
-        this.actorResolver = actorResolver;
-        this.requestAudit = requestAudit;
-        this.logger = logger;
-    }
+    private readonly ILogger logger = logger;
 
     public async Task<Result<TResponse>> Handle(RequestContext<TRequest> context, IRequestProcessor<TRequest, TResponse> next)
     {

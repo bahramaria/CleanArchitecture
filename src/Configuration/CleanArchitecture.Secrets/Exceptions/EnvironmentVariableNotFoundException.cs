@@ -2,13 +2,7 @@
 
 namespace CleanArchitecture.Secrets.Exceptions;
 
-public class EnvironmentVariableNotFoundException : ConfigurationException
+public class EnvironmentVariableNotFoundException(string variable) : ConfigurationException($"Environment Variable '{variable}' is not available!")
 {
-    public EnvironmentVariableNotFoundException(string variable)
-        : base($"Environment Variable '{variable}' is not available!")
-    {
-        Variable = variable;
-    }
-
-    public string Variable { get; }
+    public string Variable { get; } = variable;
 }

@@ -11,28 +11,13 @@ using Infrastructure.CommoditySystem;
 
 namespace CleanArchitecture.Ordering.Commands.Orders.RegisterOrderCommand;
 
-internal sealed class Handler : IRequestHandler<Command, Empty>
+internal sealed class Handler(
+    IOrderRepository orderRepository,
+    IBuildOrderService buildOrderService,
+    ICommoditySystem commoditySystem,
+    IDomainEventPublisher eventPublisher,
+    IIntegrationEventBus integrationEventBus) : IRequestHandler<Command, Empty>
 {
-    private readonly IOrderRepository orderRepository;
-    private readonly IBuildOrderService buildOrderService;
-    private readonly ICommoditySystem commoditySystem;
-    private readonly IDomainEventPublisher eventPublisher;
-    private readonly IIntegrationEventBus integrationEventBus;
-
-    public Handler(
-        IOrderRepository orderRepository,
-        IBuildOrderService buildOrderService,
-        ICommoditySystem commoditySystem,
-        IDomainEventPublisher eventPublisher,
-        IIntegrationEventBus integrationEventBus)
-    {
-        this.orderRepository = orderRepository;
-        this.buildOrderService = buildOrderService;
-        this.commoditySystem = commoditySystem;
-        this.eventPublisher = eventPublisher;
-        this.integrationEventBus = integrationEventBus;
-    }
-
     public async Task<Result<Empty>> Handle(Command request, CancellationToken cancellationToken)
     {
         if (await orderRepository.Exists(request.OrderId))

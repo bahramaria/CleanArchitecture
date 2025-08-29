@@ -1,14 +1,8 @@
 ﻿namespace CleanArchitecture.Actors;
 
-public class CustomerActor : Actor
+public class CustomerActor(int customerId, string username, string displayName) : Actor(Role.Customer, username, displayName)
 {
-    public CustomerActor(int customerId, string username, string displayName)
-        : base(Role.Customer, username, displayName)
-    {
-        CustomerId = customerId;
-    }
-
-    public int CustomerId { get; }
+    public int CustomerId { get; } = customerId;
 
     public override string ToString()
     {

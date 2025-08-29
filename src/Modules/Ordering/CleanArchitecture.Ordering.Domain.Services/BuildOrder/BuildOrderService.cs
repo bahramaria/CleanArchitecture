@@ -3,19 +3,10 @@ using Framework.DomainRules.Extensions;
 
 namespace CleanArchitecture.Ordering.Domain.Services.BuildOrder;
 
-internal class BuildOrderService : IBuildOrderService
+internal class BuildOrderService(
+    BuildOrderPolicyBuilder policyBuilder,
+    IOrderTrackingCodeBuilder trackingCodeBuilder) : IBuildOrderService
 {
-    private readonly BuildOrderPolicyBuilder policyBuilder;
-    private readonly IOrderTrackingCodeBuilder trackingCodeBuilder;
-
-    public BuildOrderService(
-        BuildOrderPolicyBuilder policyBuilder,
-        IOrderTrackingCodeBuilder trackingCodeBuilder)
-    {
-        this.policyBuilder = policyBuilder;
-        this.trackingCodeBuilder = trackingCodeBuilder;
-    }
-
     public async Task<Result<Order>> BuildOrder(BuildOrderRequest request)
     {
         var policy = policyBuilder.Build(request);

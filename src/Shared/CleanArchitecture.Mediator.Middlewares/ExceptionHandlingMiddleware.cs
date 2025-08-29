@@ -7,15 +7,10 @@ using Microsoft.Extensions.Logging;
 
 namespace CleanArchitecture.Mediator.Middlewares;
 
-public sealed class ExceptionHandlingMiddleware<TRequest, TResponse> :
+public sealed class ExceptionHandlingMiddleware<TRequest, TResponse>(ILogger<ExceptionHandlingMiddleware<TRequest, TResponse>> logger) :
     IMiddleware<TRequest, TResponse>
 {
-    private readonly ILogger logger;
-
-    public ExceptionHandlingMiddleware(ILogger<ExceptionHandlingMiddleware<TRequest, TResponse>> logger)
-    {
-        this.logger = logger;
-    }
+    private readonly ILogger logger = logger;
 
     public async Task<Result<TResponse>> Handle(RequestContext<TRequest> context, IRequestProcessor<TRequest, TResponse> next)
     {

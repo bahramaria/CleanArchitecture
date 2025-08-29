@@ -1,8 +1,5 @@
 ﻿namespace CleanArchitecture.Actors;
 
-public class Programmer : Actor
+public class Programmer(string username, string displayName) : Actor(Role.Programmer, username, displayName)
 {
-    public Programmer(string username, string displayName) 
-        : base(Role.Programmer, username, displayName)
-    { }
 }

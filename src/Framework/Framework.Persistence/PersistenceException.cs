@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Framework.Persistence;
 
-public class PersistenceException : Exceptions.PersistenceException
+public class PersistenceException(PersistenceException.Reasons reason, Exception innerException) : Exceptions.PersistenceException(innerException)
 {
     private const string TransientFailureMessage = "An exception has been raised that is likely due to a transient failure";
 
@@ -24,13 +24,7 @@ public class PersistenceException : Exceptions.PersistenceException
         TransientFailure = 100
     }
 
-    public Reasons Reason { get; }
-
-    public PersistenceException(Reasons reason, Exception innerException)
-        : base(innerException)
-    {
-        Reason = reason;
-    }
+    public Reasons Reason { get; } = reason;
 
     public static PersistenceException Translate(Exception exception)
     {

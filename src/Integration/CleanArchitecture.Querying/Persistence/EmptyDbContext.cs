@@ -2,9 +2,6 @@
 
 namespace CleanArchitecture.Querying.Persistence;
 
-public class EmptyDbContext : DbContext
+public class EmptyDbContext(DbContextOptions<EmptyDbContext> options) : DbContext(options)
 {
-    public EmptyDbContext(DbContextOptions<EmptyDbContext> options)
-        : base(options)
-    { }
 }

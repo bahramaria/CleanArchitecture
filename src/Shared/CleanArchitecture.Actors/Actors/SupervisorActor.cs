@@ -1,8 +1,5 @@
 ﻿namespace CleanArchitecture.Actors;
 
-public class SupervisorActor : Actor
+public class SupervisorActor(string username, string displayName) : Actor(Role.Supervisor, username, displayName)
 {
-    public SupervisorActor(string username, string displayName)
-        : base(Role.Supervisor, username, displayName)
-    { }
 }

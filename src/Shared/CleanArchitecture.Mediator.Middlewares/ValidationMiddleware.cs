@@ -4,15 +4,10 @@ using Framework.Validation;
 
 namespace CleanArchitecture.Mediator.Middlewares;
 
-public sealed class ValidationMiddleware<TRequest, TResponse> :
+public sealed class ValidationMiddleware<TRequest, TResponse>(IEnumerable<IValidator<TRequest>>? validators) :
     IMiddleware<TRequest, TResponse>
 {
-    private readonly IValidator<TRequest>[] validators;
-
-    public ValidationMiddleware(IEnumerable<IValidator<TRequest>>? validators)
-    {
-        this.validators = validators?.ToArray() ?? [];
-    }
+    private readonly IValidator<TRequest>[] validators = validators?.ToArray() ?? [];
 
     public async Task<Result<TResponse>> Handle(RequestContext<TRequest> context, IRequestProcessor<TRequest, TResponse> next)
     {

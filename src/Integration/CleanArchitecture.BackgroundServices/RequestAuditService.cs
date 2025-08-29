@@ -3,15 +3,8 @@ using Microsoft.Extensions.Hosting;
 
 namespace CleanArchitecture.BackgroundServices;
 
-public class RequestAuditService : BackgroundService
+public class RequestAuditService(RequestAuditAgent commandAuditAgent) : BackgroundService
 {
-    private readonly RequestAuditAgent commandAuditAgent;
-
-    public RequestAuditService(RequestAuditAgent commandAuditAgent)
-    {
-        this.commandAuditAgent = commandAuditAgent;
-    }
-
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         commandAuditAgent.Start(stoppingToken);

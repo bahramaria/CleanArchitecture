@@ -5,17 +5,10 @@ using System.Security.Claims;
 
 namespace CleanArchitecture.WebApi.Actors;
 
-internal class HttpActorProvider : IActorProvider
+internal class HttpActorProvider(IHttpContextAccessor httpContextAccessor) : IActorProvider
 {
-    private readonly IHttpContextAccessor httpContextAccessor;
-
     private bool actorResolved = false;
     private Actor? actor = null;
-
-    public HttpActorProvider(IHttpContextAccessor httpContextAccessor)
-    {
-        this.httpContextAccessor = httpContextAccessor;
-    }
 
     public Actor? CurrentActor()
     {

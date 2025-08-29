@@ -8,20 +8,11 @@ using Framework.Scheduling;
 
 namespace CleanArchitecture.Scheduling;
 
-public class SampleJobService : IJobService
+public class SampleJobService(
+    IQueryService queryService,
+    IBatchCommandsService<Ordering.Commands.EmptyTestingCommand.Command> batchCommandsService) : IJobService
 {
-    private readonly IQueryService queryService;
-    private readonly IBatchCommandsService<Ordering.Commands.EmptyTestingCommand.Command> batchCommandsService;
-
     private static readonly Actor Actor = new InternalServiceActor(nameof(SampleJobService));
-
-    public SampleJobService(
-        IQueryService queryService,
-        IBatchCommandsService<Ordering.Commands.EmptyTestingCommand.Command> batchCommandsService)
-    {
-        this.queryService = queryService;
-        this.batchCommandsService = batchCommandsService;
-    }
 
     public async Task Execute(CancellationToken stoppingToken)
     {

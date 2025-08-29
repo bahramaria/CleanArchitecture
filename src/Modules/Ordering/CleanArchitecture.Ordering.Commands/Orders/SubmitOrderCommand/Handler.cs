@@ -10,22 +10,11 @@ using Framework.Mediator;
 
 namespace CleanArchitecture.Ordering.Commands.Orders.SubmitOrderCommand;
 
-internal sealed class Handler : IRequestHandler<Command, Empty>
+internal sealed class Handler(
+    IActorResolver actorResolver,
+    IOrderRepository orderRepository,
+    IIntegrationEventBus integrationEventBus) : IRequestHandler<Command, Empty>
 {
-    private readonly IActorResolver actorResolver;
-    private readonly IOrderRepository orderRepository;
-    private readonly IIntegrationEventBus integrationEventBus;
-
-    public Handler(
-        IActorResolver actorResolver,
-        IOrderRepository orderRepository,
-        IIntegrationEventBus integrationEventBus)
-    {
-        this.actorResolver = actorResolver;
-        this.orderRepository = orderRepository;
-        this.integrationEventBus = integrationEventBus;
-    }
-
     public async Task<Result<Empty>> Handle(Command request, CancellationToken cancellationToken)
     {
         var actor = actorResolver.Actor;

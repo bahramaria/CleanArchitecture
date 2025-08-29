@@ -2,15 +2,8 @@
 
 namespace Framework.Mediator.DomainEvents;
 
-internal sealed class DomainEventPublisher : IDomainEventPublisher
+internal sealed class DomainEventPublisher(IServiceProvider serviceProvider) : IDomainEventPublisher
 {
-    private readonly IServiceProvider serviceProvider;
-
-    public DomainEventPublisher(IServiceProvider serviceProvider)
-    {
-        this.serviceProvider = serviceProvider;
-    }
-
     public Task<Result<Empty>> Publish<TEvent>(TEvent @event, CancellationToken cancellationToken)
         where TEvent : IDomainEvent
     {
